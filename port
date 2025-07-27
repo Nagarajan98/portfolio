@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nagarajan C - Product Marketing Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        .smooth-scroll {
+            scroll-behavior: smooth;
+        }
+        .hover-scale {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .hover-scale:hover {
+            transform: scale(1.03);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #14b8a6, #f87171);
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-gray-50 smooth-scroll">
+    <!-- Header -->
+    <header class="gradient-bg text-white text-center py-16">
+        <h1 class="text-4xl md:text-5xl font-bold mb-3">Nagarajan C</h1>
+        <p class="text-lg md:text-xl mb-4">Product Marketing | Demand Generation | B2B SaaS Enthusiast</p>
+        <p class="text-sm">+91 8072822617 | nagarajanchokkalingam15@gmail.com | Chennai, India</p>
+        <a href="https://linkedin.com/in/nagarajanchokkalingam" target="_blank" class="text-yellow-300 hover:text-yellow-100 mt-2 inline-block">LinkedIn Profile</a>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="bg-teal-700 text-white py-4 sticky top-0 z-10 shadow-lg">
+        <div class="container mx-auto flex justify-center space-x-4 md:space-x-8">
+            <a href="#about" class="hover:text-yellow-300 font-semibold">About</a>
+            <a href="#experience" class="hover:text-yellow-300 font-semibold">Experience</a>
+            <a href="#projects" class="hover:text-yellow-300 font-semibold">Projects</a>
+            <a href="#skills" class="hover:text-yellow-300 font-semibold">Skills</a>
+            <a href="#certifications" class="hover:text-yellow-300 font-semibold">Certifications</a>
+            <a href="#contact" class="hover:text-yellow-300 font-semibold">Contact</a>
+        </div>
+    </nav>
+
+    <!-- About Section -->
+    <section id="about" class="py-12 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-teal-700 mb-6 text-center">About Me</h2>
+            <p class="text-lg text-gray-700 max-w-3xl mx-auto">I’m a passionate Product Marketing professional with over 3 years of B2B experience, specializing in demand generation, brand messaging, and multi-channel campaign execution. I’ve driven 35% growth in qualified leads through targeted GTM strategies and optimized campaigns for 20% higher conversions using Google Ads and Meta Ads. Skilled in crafting compelling narratives and leveraging tools like HubSpot and SEMrush, I’m excited to contribute to innovative SaaS solutions by shaping market perception and driving pipeline growth.</p>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="py-12 bg-gray-100">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-teal-700 mb-6 text-center">Experience</h2>
+            <div class="space-y-8">
+                <div class="bg-white p-6 rounded-lg shadow-md hover-scale border-l-4 border-teal-500">
+                    <h3 class="text-xl font-semibold text-coral-600">Digital Marketing Manager - Sharoff Steel Suppliers, Chennai</h3>
+                    <p class="text-gray-600">Oct 2022 - Present</p>
+                    <ul class="list-disc ml-6 mt-2 text-gray-700">
+                        <li>Led GTM strategies with ABM and drip marketing, boosting qualified leads by 35% for B2B audiences.</li>
+                        <li>Optimized Google Ads and Meta Ads campaigns, achieving 20% higher conversions and 15% lower cost per lead.</li>
+                        <li>Developed SEO-optimized landing pages using HTML, CSS, and JavaScript, enhancing lead generation.</li>
+                        <li>Partnered with sales to align messaging with buyer personas, improving lead quality by 20%.</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md hover-scale border-l-4 border-coral-500">
+                    <h3 class="text-xl font-semibold text-coral-600">Email Marketing Specialist - Vintorix Private Limited, Chennai</h3>
+                    <p class="text-gray-600">Nov 2021 - June 2022</p>
+                    <ul class="list-disc ml-6 mt-2 text-gray-700">
+                        <li>Created targeted email campaigns, driving 25% higher engagement with personalized content.</li>
+                        <li>Managed email servers, ensuring 98% deliverability for high-volume B2C campaigns.</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md hover-scale border-l-4 border-yellow-500">
+                    <h3 class="text-xl font-semibold text-coral-600">Digital Marketing Intern - Yemi Foundation, Kangayam</h3>
+                    <p class="text-gray-600">Sep 2020 - Oct 2020</p>
+                    <ul class="list-disc ml-6 mt-2 text-gray-700">
+                        <li>Authored electronics-focused content, increasing website insights by 20%.</li>
+                        <li>Designed social media assets, boosting user attention by 30% in 2 months.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-12 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-teal-700 mb-6 text-center">Projects</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-teal-50 p-6 rounded-lg shadow-md hover-scale border-l-4 border-teal-500">
+                    <h3 class="text-xl font-semibold text-coral-600">SaaS Landing Page Design</h3>
+                    <p class="text-gray-700">Built a conversion-focused landing page for a B2B client using Figma and VS Code, increasing form submissions by 30% through SEO and UX optimization.</p>
+                </div>
+                <div class="bg-coral-50 p-6 rounded-lg shadow-md hover-scale border-l-4 border-coral-500">
+                    <h3 class="text-xl font-semibold text-coral-600">Email Marketing Guide</h3>
+                    <p class="text-gray-700">Authored a book on tech-driven email marketing, outlining ABM and drip campaign strategies tailored for B2B SaaS demand generation.</p>
+                </div>
+                <div class="bg-yellow-50 p-6 rounded-lg shadow-md hover-scale border-l-4 border-yellow-500">
+                    <h3 class="text-xl font-semibold text-coral-600">Social Media Campaign</h3>
+                    <p class="text-gray-700">Managed LinkedIn and Meta Ads campaigns, crafting persona-driven content that boosted engagement by 25% and generated 100+ monthly leads.</p>
+                </div>
+                <div class="bg-teal-50 p-6 rounded-lg shadow-md hover-scale border-l-4 border-teal-500">
+                    <h3 class="text-xl font-semibold text-coral-600">Competitive Positioning Audit</h3>
+                    <p class="text-gray-700">Conducted a competitive analysis, developing messaging frameworks that increased campaign click-through rates by 15%.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-12 bg-gray-100">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-teal-700 mb-6 text-center">Skills</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="bg-teal-100 p-4 rounded-lg shadow-md text-center hover-scale">Demand Generation</div>
+                <div class="bg-coral-100 p-4 rounded-lg shadow-md text-center hover-scale">Account-Based Marketing</div>
+                <div class="bg-yellow-100 p-4 rounded-lg shadow-md text-center hover-scale">Content Creation</div>
+                <div class="bg-teal-100 p-4 rounded-lg shadow-md text-center hover-scale">Technical SEO</div>
+                <div class="bg-coral-100 p-4 rounded-lg shadow-md text-center hover-scale">Google Ads</div>
+                <div class="bg-yellow-100 p-4 rounded-lg shadow-md text-center hover-scale">Meta Ads</div>
+                <div class="bg-teal-100 p-4 rounded-lg shadow-md text-center hover-scale">HubSpot</div>
+                <div class="bg-coral-100 p-4 rounded-lg shadow-md text-center hover-scale">SEMrush</div>
+                <div class="bg-yellow-100 p-4 rounded-lg shadow-md text-center hover-scale">Google Analytics</div>
+                <div class="bg-teal-100 p-4 rounded-lg shadow-md text-center hover-scale">Figma</div>
+                <div class="bg-coral-100 p-4 rounded-lg shadow-md text-center hover-scale">HTML/CSS/JavaScript</div>
+                <div class="bg-yellow-100 p-4 rounded-lg shadow-md text-center hover-scale">CRM Systems</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Certifications Section -->
+    <section id="certifications" class="py-12 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-teal-700 mb-6 text-center">Certifications</h2>
+            <div class="space-y-6">
+                <div class="bg-teal-50 p-6 rounded-lg shadow-md hover-scale border-l-4 border-teal-500">
+                    <h3 class="text-xl font-semibold text-coral-600">Inbound Marketing - HubSpot Academy (Pursuing)</h3>
+                    <p class="text-gray-700">Focusing on content marketing, customer engagement, and SaaS demand generation.</p>
+                </div>
+                <div class="bg-coral-50 p-6 rounded-lg shadow-md hover-scale border-l-4 border-coral-500">
+                    <h3 class="text-xl font-semibold text-coral-600">Technical SEO - Blue Array Academy</h3>
+                    <p class="text-gray-700">Mastered website optimization, technical audits, and SERP analysis.</p>
+                </div>
+                <div class="bg-yellow-50 p-6 rounded-lg shadow-md hover-scale border-l-4 border-yellow-500">
+                    <h3 class="text-xl font-semibold text-coral-600">Digital Marketing - Google Digital Unlocked & Udemy</h3>
+                    <p class="text-gray-700">Developed expertise in SEO, SEM, and analytics for campaign execution.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-12 bg-gray-100">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold text-teal-700 mb-6">Get in Touch</h2>
+            <p class="text-lg text-gray-700 mb-4">Excited to discuss product marketing opportunities in B2B SaaS? Let’s connect!</p>
+            <p class="text-gray-700">Email: <a href="mailto:nagarajanchokkalingam15@gmail.com" class="text-coral-600 hover:text-coral-800">nagarajanchokkalingam15@gmail.com</a></p>
+            <p class="text-gray-700">Phone: +91 8072822617</p>
+            <p class="text-gray-700">LinkedIn: <a href="https://linkedin.com/in/nagarajanchokkalingam" target="_blank" class="text-coral-600 hover:text-coral-800">NagarajanChokkalingam</a></p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="gradient-bg text-white text-center py-4">
+        <p>&copy; 2025 Nagarajan C. All rights reserved.</p>
+    </footer>
+
+    <!-- JavaScript for Smooth Scroll -->
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
