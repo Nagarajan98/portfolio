@@ -1,239 +1,802 @@
-<script type="text/javascript">
-        var gk_isXlsx = false;
-        var gk_xlsxFileLookup = {};
-        var gk_fileData = {};
-        function filledCell(cell) {
-          return cell !== '' && cell != null;
-        }
-        function loadFileData(filename) {
-        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-            try {
-                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-                var firstSheetName = workbook.SheetNames[0];
-                var worksheet = workbook.Sheets[firstSheetName];
-
-                // Convert sheet to JSON to filter blank rows
-                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                // Filter out blank rows (rows where all cells are empty, null, or undefined)
-                var filteredData = jsonData.filter(row => row.some(filledCell));
-
-                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
-                var headerRowIndex = filteredData.findIndex((row, index) =>
-                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-                );
-                // Fallback
-                if (headerRowIndex === -1 || headerRowIndex > 25) {
-                  headerRowIndex = 0;
-                }
-
-                // Convert filtered JSON back to CSV
-                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
-                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-                return csv;
-            } catch (e) {
-                console.error(e);
-                return "";
-            }
-        }
-        return gk_fileData[filename] || "";
-        }
-        </script><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nagarajan C Portfolio</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-        }
-        .smooth-scroll {
-            scroll-behavior: smooth;
-        }
-        .hover-scale {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .hover-scale:hover {
-            transform: scale(1.03);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-        }
-        .gradient-bg {
-            background: linear-gradient(135deg, #14b8a6, #f87171);
-        }
-    </style>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-D35QJ1H3HD"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nagarajan C — Marketing Automation & ABM Specialist</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,700;1,9..144,300&family=Syne:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  gtag('config', 'G-D35QJ1H3HD');
-</script>
+  :root {
+    --bg: #080a0e;
+    --bg2: #0f1218;
+    --bg3: #161b24;
+    --amber: #e8a030;
+    --amber2: #f0b84a;
+    --text: #f0ece4;
+    --muted: #8a8a96;
+    --border: rgba(255,255,255,0.07);
+    --accent-glow: rgba(232,160,48,0.12);
+  }
 
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    overflow-x: hidden;
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--amber); border-radius: 2px; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.2rem 4rem;
+    background: rgba(8,10,14,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'Fraunces', serif;
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--amber); }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--amber); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 8rem 4rem 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-grid-bg {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+  }
+  .hero-orb {
+    position: absolute;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(232,160,48,0.08) 0%, transparent 70%);
+    top: -100px; right: -100px;
+    pointer-events: none;
+  }
+  .hero-content { position: relative; max-width: 900px; }
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--accent-glow);
+    border: 1px solid rgba(232,160,48,0.25);
+    border-radius: 100px;
+    padding: 6px 16px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--amber2);
+    margin-bottom: 2rem;
+    animation: fadeUp 0.6s ease both;
+  }
+  .hero-tag::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--amber);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(3rem, 7vw, 6rem);
+    font-weight: 700;
+    line-height: 1.0;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.3em;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+  h1 em {
+    font-style: italic;
+    font-weight: 300;
+    color: var(--amber);
+  }
+  .hero-sub {
+    font-size: 1.05rem;
+    color: var(--muted);
+    max-width: 540px;
+    margin-bottom: 3rem;
+    animation: fadeUp 0.6s 0.2s ease both;
+    line-height: 1.8;
+  }
+  .hero-cta {
+    display: flex; gap: 1rem; flex-wrap: wrap;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--amber);
+    color: #080a0e;
+    padding: 0.9rem 2rem;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .btn-primary:hover { background: var(--amber2); transform: translateY(-2px); }
+  .btn-ghost {
+    display: inline-flex; align-items: center; gap: 8px;
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 0.9rem 2rem;
+    border-radius: 4px;
+    font-weight: 500;
+    font-size: 0.85rem;
+    text-decoration: none;
+    transition: border-color 0.2s, transform 0.15s;
+  }
+  .btn-ghost:hover { border-color: var(--amber); color: var(--amber); transform: translateY(-2px); }
+  .hero-stats {
+    display: flex; gap: 3rem; margin-top: 5rem;
+    padding-top: 3rem;
+    border-top: 1px solid var(--border);
+    animation: fadeUp 0.6s 0.4s ease both;
+  }
+  .stat-num {
+    font-family: 'Fraunces', serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--amber);
+    line-height: 1;
+  }
+  .stat-label { font-size: 0.75rem; color: var(--muted); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.1em; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── SECTIONS ── */
+  section { padding: 6rem 4rem; }
+  .section-label {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 1.5rem;
+  }
+  .section-label::after {
+    content: '';
+    display: block;
+    width: 40px; height: 1px;
+    background: var(--amber);
+    opacity: 0.5;
+  }
+  h2 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+  h2 em { font-style: italic; font-weight: 300; color: var(--amber); }
+  .section-intro { font-size: 1rem; color: var(--muted); max-width: 480px; margin-bottom: 4rem; line-height: 1.8; }
+
+  /* ── EXPERIENCE ── */
+  .exp-container { max-width: 1100px; margin: 0 auto; }
+  .exp-grid { display: grid; grid-template-columns: 280px 1fr; gap: 0; }
+  .exp-timeline { position: relative; padding-right: 3rem; }
+  .exp-timeline::after {
+    content: ''; position: absolute;
+    top: 0; right: 0; bottom: 0;
+    width: 1px; background: var(--border);
+  }
+  .exp-item { margin-bottom: 3rem; opacity: 0.4; cursor: pointer; transition: opacity 0.3s; }
+  .exp-item.active, .exp-item:hover { opacity: 1; }
+  .exp-item.active .exp-dot { background: var(--amber); box-shadow: 0 0 12px rgba(232,160,48,0.4); }
+  .exp-date { font-size: 0.7rem; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px; }
+  .exp-company { font-weight: 700; font-size: 0.95rem; margin-bottom: 2px; }
+  .exp-role { font-size: 0.8rem; color: var(--muted); }
+  .exp-dot {
+    position: absolute;
+    right: -5px; top: 6px;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--bg3);
+    border: 2px solid var(--amber);
+    transition: background 0.3s, box-shadow 0.3s;
+  }
+  .exp-detail { padding-left: 3rem; }
+  .exp-panel { display: none; animation: fadeIn 0.3s ease; }
+  .exp-panel.visible { display: block; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  .exp-panel h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+  }
+  .exp-panel .company-type {
+    font-size: 0.78rem;
+    color: var(--amber);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+  .exp-bullets { list-style: none; display: flex; flex-direction: column; gap: 1rem; }
+  .exp-bullets li {
+    display: flex; gap: 12px;
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: #c8c4bc;
+  }
+  .exp-bullets li::before {
+    content: '→';
+    color: var(--amber);
+    flex-shrink: 0;
+    margin-top: 2px;
+    font-size: 0.8rem;
+  }
+  .exp-metric {
+    display: inline-flex;
+    background: var(--accent-glow);
+    border: 1px solid rgba(232,160,48,0.2);
+    border-radius: 4px;
+    padding: 2px 8px;
+    color: var(--amber2);
+    font-weight: 700;
+    font-size: 0.85em;
+    margin: 0 2px;
+  }
+
+  /* ── SKILLS ── */
+  .skills-section { background: var(--bg2); }
+  .skills-container { max-width: 1100px; margin: 0 auto; }
+  .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5px; margin-top: 3rem; }
+  .skill-card {
+    background: var(--bg3);
+    padding: 2rem;
+    transition: background 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .skill-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--amber), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .skill-card:hover { background: #1c2230; }
+  .skill-card:hover::before { opacity: 1; }
+  .skill-icon {
+    width: 40px; height: 40px;
+    background: var(--accent-glow);
+    border: 1px solid rgba(232,160,48,0.2);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+  }
+  .skill-card h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.75rem; }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag {
+    font-size: 0.7rem;
+    padding: 3px 10px;
+    border-radius: 100px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .tag:hover { border-color: var(--amber); color: var(--amber); }
+
+  /* ── PROJECTS ── */
+  .projects-container { max-width: 1100px; margin: 0 auto; }
+  .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1px; margin-top: 3rem; background: var(--border); }
+  .project-card {
+    background: var(--bg);
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.2s;
+  }
+  .project-card:hover { background: var(--bg2); }
+  .project-number {
+    font-family: 'Fraunces', serif;
+    font-size: 5rem;
+    font-weight: 700;
+    color: rgba(232,160,48,0.06);
+    position: absolute;
+    top: -1rem; right: 1rem;
+    line-height: 1;
+    pointer-events: none;
+  }
+  .project-type {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 1rem;
+  }
+  .project-card h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    line-height: 1.2;
+  }
+  .project-card p { font-size: 0.88rem; color: var(--muted); line-height: 1.75; }
+
+  /* ── CERTIFICATIONS ── */
+  .certs-section { background: var(--bg2); }
+  .certs-container { max-width: 1100px; margin: 0 auto; }
+  .cert-list { display: flex; flex-direction: column; gap: 1px; margin-top: 3rem; }
+  .cert-item {
+    display: flex; align-items: center; gap: 1.5rem;
+    background: var(--bg3);
+    padding: 1.4rem 2rem;
+    transition: background 0.2s;
+  }
+  .cert-item:hover { background: #1c2230; }
+  .cert-logo {
+    width: 48px; height: 48px;
+    border-radius: 10px;
+    background: var(--accent-glow);
+    border: 1px solid rgba(232,160,48,0.15);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+  }
+  .cert-info { flex: 1; }
+  .cert-info h4 { font-size: 0.9rem; font-weight: 700; margin-bottom: 2px; }
+  .cert-info p { font-size: 0.78rem; color: var(--muted); }
+  .cert-badge {
+    font-size: 0.68rem;
+    padding: 4px 12px;
+    border-radius: 100px;
+    background: var(--accent-glow);
+    border: 1px solid rgba(232,160,48,0.2);
+    color: var(--amber2);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  /* ── CONTACT ── */
+  .contact-section { text-align: center; }
+  .contact-container { max-width: 700px; margin: 0 auto; }
+  .contact-big {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.5rem;
+  }
+  .contact-big em { font-style: italic; font-weight: 300; color: var(--amber); }
+  .contact-sub { font-size: 1rem; color: var(--muted); margin-bottom: 3rem; }
+  .contact-links { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+  .contact-chip {
+    display: inline-flex; align-items: center; gap: 8px;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 0.7rem 1.5rem;
+    color: var(--text);
+    text-decoration: none;
+    font-size: 0.82rem;
+    transition: border-color 0.2s, color 0.2s, transform 0.15s;
+  }
+  .contact-chip:hover { border-color: var(--amber); color: var(--amber); transform: translateY(-2px); }
+  .contact-chip span { font-size: 1rem; }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 2rem 4rem;
+    border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  footer p { font-size: 0.75rem; color: var(--muted); }
+  .footer-tag {
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+  }
+  .footer-tag span { color: var(--amber); }
+
+  /* ── REVEAL ── */
+  .reveal { opacity: 0; transform: translateY(32px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.in-view { opacity: 1; transform: none; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    section { padding: 4rem 1.5rem; }
+    .hero { padding: 7rem 1.5rem 3rem; }
+    .hero-stats { flex-wrap: wrap; gap: 1.5rem; }
+    .exp-grid { grid-template-columns: 1fr; }
+    .exp-timeline { display: none; }
+    .exp-detail { padding-left: 0; }
+    .exp-panel { display: block !important; margin-bottom: 2.5rem; }
+    footer { flex-direction: column; gap: 0.5rem; text-align: center; padding: 1.5rem; }
+  }
+</style>
 </head>
-<body class="bg-gray-50 smooth-scroll">
-    <!-- Header -->
-    <header class="gradient-bg text-white text-center py-16">
-        <h1 class="text-4xl md:text-5xl font-bold mb-3">Nagarajan C</h1>
-        <p class="text-lg md:text-xl mb-4">B2B Digital Marketing Specialist | Inbound Lead Generation for IT Services & SaaS</p>
-        <p class="text-sm">+91 8072822617 | nagarajanchokkalingam15@gmail.com | Chennai, India</p>
-        <a href="https://www.linkedin.com/in/nagarajan-chokkalingam/?utm_source=linkedin&utm_medium=social&utm_campaign=portfolio_share&utm_term=profile_link" target="_blank" class="text-yellow-300 hover:text-yellow-100 mt-2 inline-block">LinkedIn Profile</a>
-    </header>
+<body>
 
-    <!-- Navigation -->
-    <nav class="bg-teal-700 text-white py-4 sticky top-0 z-10 shadow-lg">
-        <div class="container mx-auto flex justify-center space-x-4 md:space-x-8">
-            <a href="#about" class="hover:text-yellow-300 font-semibold">About</a>
-            <a href="#experience" class="hover:text-yellow-300 font-semibold">Experience</a>
-            <a href="#projects" class="hover:text-yellow-300 font-semibold">Projects</a>
-            <a href="#skills" class="hover:text-yellow-300 font-semibold">Skills</a>
-            <a href="#certifications" class="hover:text-yellow-300 font-semibold">Certifications</a>
-            <a href="#contact" class="hover:text-yellow-300 font-semibold">Contact</a>
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">N<span>.</span>C</a>
+  <ul class="nav-links">
+    <li><a href="#experience">Work</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-orb"></div>
+  <div class="hero-content">
+    <div class="hero-tag">Available for opportunities · Chennai, India</div>
+    <h1>Nagarajan <em>C.</em></h1>
+    <h1 style="color: var(--muted); font-size: clamp(1.5rem, 3.5vw, 2.8rem); margin-bottom: 1.5rem;">Marketing Automation<br>&amp; ABM Specialist</h1>
+    <p class="hero-sub">4+ years turning B2B pipelines into revenue machines through precision automation, account-based strategies, and MarTech orchestration that actually converts.</p>
+    <div class="hero-cta">
+      <a href="mailto:nagarajanchokkalingam15@gmail.com" class="btn-primary">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
+        Get in Touch
+      </a>
+      <a href="https://linkedin.com/in/nagarajanchokkalingam" target="_blank" class="btn-ghost">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        LinkedIn
+      </a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num">4+</div>
+        <div class="stat-label">Years B2B Experience</div>
+      </div>
+      <div>
+        <div class="stat-num">35%</div>
+        <div class="stat-label">Avg. Lead Increase</div>
+      </div>
+      <div>
+        <div class="stat-num">1</div>
+        <div class="stat-label">Published Book</div>
+      </div>
+      <div>
+        <div class="stat-num">5+</div>
+        <div class="stat-label">MarTech Platforms</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="exp-container">
+    <div class="reveal">
+      <div class="section-label">Experience</div>
+      <h2>Where I've <em>built</em> things</h2>
+      <p class="section-intro">Four years of shipping automations, growing pipelines, and aligning sales and marketing at every stage.</p>
+    </div>
+    <div class="exp-grid reveal">
+      <div class="exp-timeline">
+        <div class="exp-item active" data-target="exp1" style="position:relative">
+          <div class="exp-dot"></div>
+          <div class="exp-date">Sep 2025 – Present</div>
+          <div class="exp-company">Rupenet Technology</div>
+          <div class="exp-role">Digital Marketing Manager</div>
         </div>
-    </nav>
-
-    <!-- About Section -->
-    <section id="about" class="py-12 bg-white">
-        <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-teal-700 mb-6 text-center">About Me</h2>
-            <p class="text-lg text-gray-700 max-w-3xl mx-auto">Hands on B2B marketer with 4+ years executing inbound campaigns targeting CXOs & IT leaders. 
-    Expert in building bottom of funnel content, high converting landing pages, 
-    and multi channel funnels using GA4, GSC, SEMrush, LinkedIn Campaign Manager & HubSpot. 
-    Proven in sales marketing alignment, monthly performance reporting, and optimizing conversion rates & funnel drop offs.</p>
+        <div class="exp-item" data-target="exp2" style="position:relative">
+          <div class="exp-dot"></div>
+          <div class="exp-date">Oct 2022 – Sep 2025</div>
+          <div class="exp-company">Sharoff Steel Suppliers</div>
+          <div class="exp-role">Digital Marketing Manager</div>
         </div>
-    </section>
-
-    <!-- Experience Section -->
-    <section id="experience" class="py-12 bg-gray-100">
-        <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-teal-700 mb-6 text-center">Experience</h2>
-            <div class="space-y-8">
-                <div class="bg-white p-6 rounded-lg shadow-md hover-scale border-l-4 border-teal-500">
-                    <h3 class="text-xl font-semibold text-coral-600">Digital Marketing Manager - Sharoff Steel Suppliers, Chennai</h3>
-                    <p class="text-gray-600">Oct 2022 - Present</p>
-                    <ul class="list-disc ml-6 mt-2 text-gray-700">
-                        <li>Led GTM strategies with ABM and drip marketing, boosting qualified leads by 35% for B2B audiences.</li>
-                        <li>Optimized Google Ads, Meta Ads and Linkedin Ads campaigns, achieving 20% higher conversions and 15% lower cost per lead.</li>
-                        <li>Developed SEO-optimized landing pages using HTML, CSS, and JavaScript, enhancing lead generation.</li>
-                        <li>Partnered with sales to align messaging with buyer personas, improving lead quality by 20%.</li>
-                    </ul>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow-md hover-scale border-l-4 border-coral-500">
-                    <h3 class="text-xl font-semibold text-coral-600">Email Marketing Specialist - Vintorix Private Limited, Chennai</h3>
-                    <p class="text-gray-600">Nov 2021 - June 2022</p>
-                    <ul class="list-disc ml-6 mt-2 text-gray-700">
-                        <li>Created targeted email campaigns, driving 25% higher engagement with personalized content.</li>
-                        <li>Managed email servers, ensuring 98% deliverability for high-volume B2C campaigns.</li>
-                    </ul>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow-md hover-scale border-l-4 border-yellow-500">
-                    <h3 class="text-xl font-semibold text-coral-600">Digital Marketing Intern - Yemi Foundation, Kangayam</h3>
-                    <p class="text-gray-600">Sep 2020 - Oct 2020</p>
-                    <ul class="list-disc ml-6 mt-2 text-gray-700">
-                        <li>Authored electronics-focused content, increasing website insights by 20%.</li>
-                        <li>Designed social media assets, boosting user attention by 30% in 2 months.</li>
-                    </ul>
-                </div>
-            </div>
+        <div class="exp-item" data-target="exp3" style="position:relative">
+          <div class="exp-dot"></div>
+          <div class="exp-date">Nov 2021 – Jun 2022</div>
+          <div class="exp-company">Vintorix Pvt Ltd</div>
+          <div class="exp-role">Email Marketing Executive</div>
         </div>
-    </section>
-
-    <!-- Projects Section -->
-    <section id="projects" class="py-12 bg-white">
-        <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-teal-700 mb-6 text-center">Projects</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="bg-teal-50 p-6 rounded-lg shadow-md hover-scale border-l-4 border-teal-500">
-                    <h3 class="text-xl font-semibold text-coral-600">SaaS Landing Page Design</h3>
-                    <p class="text-gray-700">Built a conversion-focused landing page for a B2B client using Figma and VS Code, increasing form submissions by 30% through SEO and UX optimization.</p>
-                </div>
-                <div class="bg-coral-50 p-6 rounded-lg shadow-md hover-scale border-l-4 border-coral-500">
-                    <h3 class="text-xl font-semibold text-coral-600">Email Marketing Guide</h3>
-                    <p class="text-gray-700">Authored a book on tech-driven email marketing, outlining ABM and drip campaign strategies tailored for B2B SaaS demand generation.</p>
-                </div>
-                <div class="bg-yellow-50 p-6 rounded-lg shadow-md hover-scale border-l-4 border-yellow-500">
-                    <h3 class="text-xl font-semibold text-coral-600">Social Media Campaign</h3>
-                    <p class="text-gray-700">Managed LinkedIn and Meta Ads campaigns, crafting persona-driven content that boosted engagement by 25% and generated 100+ monthly leads.</p>
-                </div>
-                <div class="bg-teal-50 p-6 rounded-lg shadow-md hover-scale border-l-4 border-teal-500">
-                    <h3 class="text-xl font-semibold text-coral-600">Competitive Positioning Audit</h3>
-                    <p class="text-gray-700">Conducted a competitive analysis, developing messaging frameworks that increased campaign click-through rates by 15%.</p>
-                </div>
-            </div>
+        <div class="exp-item" data-target="exp4" style="position:relative">
+          <div class="exp-dot"></div>
+          <div class="exp-date">Sep 2020 – Oct 2020</div>
+          <div class="exp-company">Yemi Foundation</div>
+          <div class="exp-role">Digital Marketing Intern</div>
         </div>
-    </section>
-
-    <!-- Skills Section -->
-    <section id="skills" class="py-12 bg-gray-100">
-        <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-teal-700 mb-6 text-center">Skills</h2>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div class="bg-teal-100 p-4 rounded-lg shadow-md text-center hover-scale">Inbound Marketing</div>
-                <div class="bg-coral-100 p-4 rounded-lg shadow-md text-center hover-scale">Account Based Marketing</div>
-                <div class="bg-yellow-100 p-4 rounded-lg shadow-md text-center hover-scale">GA4, GSC</div>
-                <div class="bg-teal-100 p-4 rounded-lg shadow-md text-center hover-scale">Technical SEO</div>
-                <div class="bg-coral-100 p-4 rounded-lg shadow-md text-center hover-scale">Conversion Optimization</div>
-                <div class="bg-yellow-100 p-4 rounded-lg shadow-md text-center hover-scale">Meta Ads, IN Ads</div>
-                <div class="bg-teal-100 p-4 rounded-lg shadow-md text-center hover-scale">SEMrush, HubSpot</div>
-                <div class="bg-coral-100 p-4 rounded-lg shadow-md text-center hover-scale">SQL Generation</div>
-                <div class="bg-yellow-100 p-4 rounded-lg shadow-md text-center hover-scale">Statergy Planning</div>
-                <div class="bg-teal-100 p-4 rounded-lg shadow-md text-center hover-scale">Figma</div>
-                <div class="bg-coral-100 p-4 rounded-lg shadow-md text-center hover-scale">HTML, CSS, JavaScript</div>
-                <div class="bg-yellow-100 p-4 rounded-lg shadow-md text-center hover-scale">Demand Generation</div>
-            </div>
+      </div>
+      <div class="exp-detail">
+        <div id="exp1" class="exp-panel visible">
+          <h3>Rupenet Technology Solutions</h3>
+          <div class="company-type">B2B &amp; B2C · Digital Marketing Manager · Chennai</div>
+          <ul class="exp-bullets">
+            <li>Generated <span class="exp-metric">+30%</span> qualified leads through ABM combined with MarTech strategies and targeted prospecting.</li>
+            <li>Increased self-onboarding merchants for Payrupe (B2B2C App) by <span class="exp-metric">+60%</span> via targeted Meta Ads campaigns.</li>
+            <li>Doubled brand awareness within 3 months via optimized data-driven multi-channel strategies.</li>
+            <li>Improved user retention in Payrupe mobile app by <span class="exp-metric">+30%</span> through engagement-focused automation and nurturing sequences.</li>
+            <li>Built landing page strategy for Finx Collecti &amp; Finx One capturing first-party intent data to fuel personalized lead qualification.</li>
+            <li>Nurtured <span class="exp-metric">25%</span> of leads via email automation workflows, lead scoring models, and personalized drip sequences.</li>
+          </ul>
         </div>
-    </section>
-
-    <!-- Certifications Section -->
-    <section id="certifications" class="py-12 bg-white">
-        <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-teal-700 mb-6 text-center">Certifications</h2>
-            <div class="space-y-6">
-                <div class="bg-teal-50 p-6 rounded-lg shadow-md hover-scale border-l-4 border-teal-500">
-                    <h3 class="text-xl font-semibold text-coral-600">Inbound Marketing - HubSpot Academy (Pursuing)</h3>
-                    <p class="text-gray-700">Focusing on content marketing, customer engagement, and SaaS demand generation.</p>
-                </div>
-                <div class="bg-coral-50 p-6 rounded-lg shadow-md hover-scale border-l-4 border-coral-500">
-                    <h3 class="text-xl font-semibold text-coral-600">Technical SEO - Blue Array Academy</h3>
-                    <p class="text-gray-700">Mastered website optimization, technical audits, and SERP analysis.</p>
-                </div>
-                <div class="bg-yellow-50 p-6 rounded-lg shadow-md hover-scale border-l-4 border-yellow-500">
-                    <h3 class="text-xl font-semibold text-coral-600">Digital Marketing - Google Digital Unlocked & Udemy</h3>
-                    <p class="text-gray-700">Developed expertise in SEO, SEM, and analytics for campaign execution.</p>
-                </div>
-            </div>
+        <div id="exp2" class="exp-panel">
+          <h3>Sharoff Steel Suppliers</h3>
+          <div class="company-type">B2B · Digital Marketing Manager · Chennai</div>
+          <ul class="exp-bullets">
+            <li>Architected GTM strategies integrating ABM and drip marketing, increasing qualified leads by <span class="exp-metric">+35%</span>.</li>
+            <li>Executed automated campaigns with targeting and remarketing, achieving <span class="exp-metric">+20%</span> higher lead quality and conversions.</li>
+            <li>Optimized website and landing pages for automation triggers and lead capture using WordPress / HTML / CSS / JS.</li>
+            <li>Collaborated with sales teams to align marketing efforts, enhancing customer insights and campaign performance.</li>
+          </ul>
         </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="py-12 bg-gray-100">
-        <div class="container mx-auto px-4 text-center">
-            <h2 class="text-3xl font-bold text-teal-700 mb-6">Get in Touch</h2>
-            <p class="text-lg text-gray-700 mb-4">Excited to discuss opportunities in B2B SaaS? Let’s connect!</p>
-            <p class="text-gray-700">Email: <a href="mailto:nagarajanchokkalingam15@gmail.com" class="text-coral-600 hover:text-coral-800">nagarajanchokkalingam15@gmail.com</a></p>
-            <p class="text-gray-700">Phone: +91 8072822617</p>
-            <p class="text-gray-700">LinkedIn: <a href="https://www.linkedin.com/in/nagarajan-chokkalingam/?utm_source=linkedin&utm_medium=social&utm_campaign=portfolio_share&utm_term=profile_link" target="_blank" class="text-coral-600 hover:text-coral-800">NagarajanChokkalingam</a></p>
+        <div id="exp3" class="exp-panel">
+          <h3>Vintorix Private Limited</h3>
+          <div class="company-type">B2C · Email Marketing Executive · Chennai</div>
+          <ul class="exp-bullets">
+            <li>Created compelling email content driving engagement through targeted campaigns.</li>
+            <li>Managed dedicated mailing servers for high-volume email campaigns, optimizing IP and domain configurations for deliverability.</li>
+          </ul>
         </div>
-    </section>
+        <div id="exp4" class="exp-panel">
+          <h3>Yemi Foundation</h3>
+          <div class="company-type">Education · Digital Marketing Intern · Kangayam</div>
+          <ul class="exp-bullets">
+            <li>Organized website and created content on Electronics that increased insights by <span class="exp-metric">+20%</span>.</li>
+            <li>Designed social media posters and banners that grabbed user attention by <span class="exp-metric">+30%</span> in 2 months.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- Footer -->
-    <footer class="gradient-bg text-white text-center py-4">
-        <p>&copy; 2025 Nagarajan C. All rights reserved.</p>
-    </footer>
+<!-- SKILLS -->
+<section id="skills" class="skills-section">
+  <div class="skills-container">
+    <div class="reveal">
+      <div class="section-label">Skills &amp; Stack</div>
+      <h2>Tools of <em>the trade</em></h2>
+      <p class="section-intro">From automation architecture to demand generation — the full MarTech toolkit.</p>
+    </div>
+    <div class="skills-grid reveal">
+      <div class="skill-card">
+        <div class="skill-icon">⚡</div>
+        <h4>Marketing Automation</h4>
+        <div class="skill-tags">
+          <span class="tag">HubSpot</span>
+          <span class="tag">Pardot</span>
+          <span class="tag">SFMC</span>
+          <span class="tag">Brevo</span>
+          <span class="tag">n8n</span>
+          <span class="tag">Drip Workflows</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">🎯</div>
+        <h4>ABM &amp; Demand Gen</h4>
+        <div class="skill-tags">
+          <span class="tag">Target Account Strategy</span>
+          <span class="tag">Clay.com</span>
+          <span class="tag">LinkedIn Sales Nav</span>
+          <span class="tag">Apollo.io</span>
+          <span class="tag">ABM Orchestration</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">📧</div>
+        <h4>Email &amp; Nurturing</h4>
+        <div class="skill-tags">
+          <span class="tag">Lead Scoring</span>
+          <span class="tag">Lead Grading</span>
+          <span class="tag">Routing</span>
+          <span class="tag">Deliverability Opt.</span>
+          <span class="tag">Dynamic Content</span>
+          <span class="tag">A/B Testing</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">📊</div>
+        <h4>Analytics &amp; Ads</h4>
+        <div class="skill-tags">
+          <span class="tag">Google Analytics</span>
+          <span class="tag">Google Ads</span>
+          <span class="tag">Meta Ads</span>
+          <span class="tag">LinkedIn Ads</span>
+          <span class="tag">ROI Reporting</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">🔧</div>
+        <h4>Tech &amp; Optimization</h4>
+        <div class="skill-tags">
+          <span class="tag">WordPress</span>
+          <span class="tag">HTML/CSS/JS</span>
+          <span class="tag">Landing Pages</span>
+          <span class="tag">Technical SEO</span>
+          <span class="tag">CRO</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">🔗</div>
+        <h4>Strategy &amp; Ops</h4>
+        <div class="skill-tags">
+          <span class="tag">GTM Strategy</span>
+          <span class="tag">Multi-Channel Campaigns</span>
+          <span class="tag">Sales Alignment</span>
+          <span class="tag">B2B &amp; B2B2C</span>
+          <span class="tag">Personalization</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- JavaScript for Smooth Scroll -->
-    <script>
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-    </script>
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="projects-container">
+    <div class="reveal">
+      <div class="section-label">Projects &amp; Work</div>
+      <h2>Things I've <em>created</em></h2>
+      <p class="section-intro">Published work and live projects that demonstrate full-funnel marketing execution.</p>
+    </div>
+    <div class="projects-grid reveal">
+      <div class="project-card">
+        <div class="project-number">01</div>
+        <div class="project-type">Published Book</div>
+        <h3>Automated Email &amp; Nurturing</h3>
+        <p>A comprehensive guide on automation workflows, segmentation, lead scoring, deliverability, personalization, and nurture strategies — crafted specifically for B2B and B2B2C campaigns.</p>
+        <div style="margin-top: 1.5rem; display: flex; flex-wrap: wrap; gap: 6px;">
+          <span class="tag">Lead Scoring</span>
+          <span class="tag">Automation</span>
+          <span class="tag">Deliverability</span>
+          <span class="tag">B2B/B2B2C</span>
+        </div>
+      </div>
+      <div class="project-card">
+        <div class="project-number">02</div>
+        <div class="project-type">Live Website</div>
+        <h3>Kurunji Finds — Full Funnel Demo</h3>
+        <p>Built a fully responsive business website with integrated lead capture forms, automation triggers, and ABM flows to simulate end-to-end demand generation in a real-world environment.</p>
+        <div style="margin-top: 1.5rem; display: flex; flex-wrap: wrap; gap: 6px;">
+          <span class="tag">WordPress</span>
+          <span class="tag">Lead Capture</span>
+          <span class="tag">Automation</span>
+          <span class="tag">ABM</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section class="certs-section">
+  <div class="certs-container">
+    <div class="reveal">
+      <div class="section-label">Certifications</div>
+      <h2>Credentials &amp; <em>learning</em></h2>
+    </div>
+    <div class="cert-list reveal">
+      <div class="cert-item">
+        <div class="cert-logo">🏆</div>
+        <div class="cert-info">
+          <h4>Email Marketing &amp; Inbound Marketing</h4>
+          <p>Lead Scoring, ABM, Personalization, Sequences, Deliverability, A/B Testing, Inbound + Automation Strategy</p>
+        </div>
+        <div class="cert-badge">HubSpot Academy</div>
+      </div>
+      <div class="cert-item">
+        <div class="cert-logo">🔍</div>
+        <div class="cert-info">
+          <h4>Technical SEO Certification</h4>
+          <p>Landing Page Optimization Support, Technical Audits</p>
+        </div>
+        <div class="cert-badge">Blue Array Academy</div>
+      </div>
+      <div class="cert-item">
+        <div class="cert-logo">📈</div>
+        <div class="cert-info">
+          <h4>Digital Marketing Fundamentals</h4>
+          <p>Analytics, Ads, and full digital marketing strategy</p>
+        </div>
+        <div class="cert-badge">Google · Udemy</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="contact-section">
+  <div class="contact-container reveal">
+    <div class="section-label" style="justify-content: center;">Contact</div>
+    <div class="contact-big">Let's build<br><em>something great</em></div>
+    <p class="contact-sub">Open to Marketing Automation Manager, ABM/Demand Generation, and Revenue Marketing roles — remote-first &amp; global MarTech positions welcome.</p>
+    <div class="contact-links">
+      <a href="mailto:nagarajanchokkalingam15@gmail.com" class="contact-chip">
+        <span>✉</span> nagarajanchokkalingam15@gmail.com
+      </a>
+      <a href="tel:+918072822617" class="contact-chip">
+        <span>📱</span> +91 80728 22617
+      </a>
+      <a href="https://linkedin.com/in/nagarajanchokkalingam" target="_blank" class="contact-chip">
+        <span>💼</span> LinkedIn
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2025 Nagarajan C · Chennai, Tamil Nadu</p>
+  <div class="footer-tag">Marketing Automation &amp; <span>ABM Specialist</span></div>
+</footer>
+
+<script>
+  // Experience tabs
+  document.querySelectorAll('.exp-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const target = item.dataset.target;
+      document.querySelectorAll('.exp-item').forEach(i => i.classList.remove('active'));
+      document.querySelectorAll('.exp-panel').forEach(p => p.classList.remove('visible'));
+      item.classList.add('active');
+      document.getElementById(target).classList.add('visible');
+    });
+  });
+
+  // Scroll reveal
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in-view');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
 </body>
 </html>
